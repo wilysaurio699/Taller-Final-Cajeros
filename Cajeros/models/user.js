@@ -32,18 +32,59 @@ User.findByEmail = (Numero_Documento, result) => {
 };
 
 User.select = (mes, result) => {
-    const sql = `SELECT id, cliente, valor, fecha, cod_factura FROM ventas WHERE MONTH(fecha) = ? `;
-    db.query(sql, [mes], (err, ventas) => {
+    const totalVentasQuery = `SELECT SUM(valor) AS total_ventas FROM ventas WHERE MONTH(fecha) = ?`;
+    db.query(totalVentasQuery, [mes], (err, totalVentas) => {
         if (err) {
-            console.log('Error al consultar: ', err);
+            console.log('Error al calcular la suma total de ventas: ', err);
             result(err, null);
         } else {
-            console.log('Ventas del mes:', ventas);
-            result(null, ventas);
+            const totalVentasValor = totalVentas[0].total_ventas || 0;
+            const sql = `SELECT id, cliente, valor, fecha, cod_factura FROM ventas WHERE MONTH(fecha) = ?`;
+            db.query(sql, [mes], (err, ventas) => {
+                if (err) {
+                    console.log('Error al consultar: ', err);
+                    result(err, null);
+                } else {
+                    // Agregar la fila con la suma total de ventas al resultado
+                    ventas.push({
+                        total_ventas: totalVentasValor
+                    });
+
+                    console.log('Ventas del mes:', ventas);
+                    result(null, ventas);
+                }
+            });
         }
     });
 };
 
+
+User.selectdia = (dia, result) => {
+    const totalVentasQuery = `SELECT SUM(valor) AS total_ventas FROM ventas WHERE DATE(fecha) = ?`;
+    db.query(totalVentasQuery, [dia], (err, totalVentas) => {
+        if (err) {
+            console.log('Error al calcular la suma total de ventas para el día:', err);
+            result(err, null);
+        } else {
+            const totalVentasValor = totalVentas[0].total_ventas || 0;
+            const sql = `SELECT id, cliente, valor, fecha, cod_factura FROM ventas WHERE DATE(fecha) = ?`;
+            db.query(sql, [dia], (err, ventas) => {
+                if (err) {
+                    console.log('Error al consultar: ', err);
+                    result(err, null);
+                } else {
+                    // Agregar la fila con la suma total de ventas al resultado
+                    ventas.push({
+                        total_ventas: totalVentasValor
+                    });
+
+                    console.log('Ventas del día:', ventas);
+                    result(null, ventas);
+                }
+            });
+        }
+    });
+};
 
 
 User.create = async (user, result) => {

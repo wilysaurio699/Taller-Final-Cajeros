@@ -31,8 +31,16 @@ const App = () => {
             title: 'Registro',
           }}
         />
-        <Stack.Screen name="RegisterSaleScreen"
-          component={RegisterSaleScreen} />
+
+        <Stack.Screen
+          name="RegisterSaleScreen"
+          component={RegisterSaleScreen}
+          options={{
+            headerShown: true,
+            title: 'Registrar Ventas',
+          }}
+
+        />
 
       </Stack.Navigator>
     </NavigationContainer>

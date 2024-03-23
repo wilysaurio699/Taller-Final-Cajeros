@@ -21,7 +21,7 @@ module.exports = {
                 req
                 return res.status(401).json({
                     success: false,
-                    message: 'El email no existe en la base de datos'
+                    message: 'El Numero de Documento no existe en la base de datos'
                 });
             }
             const isPasswordValid = await bcrypt.compare(password,
@@ -93,8 +93,9 @@ module.exports = {
 
 
     select(req, res) {
-        const user = req.body;
-        User.select(user, (err, data) => {
+
+        const mes = req.params.mes;
+        User.select(mes, (err, data) => {
             if (err) {
                 return res.status(501).json({
                     success: false,
@@ -109,7 +110,31 @@ module.exports = {
 
             });
         });
+
+    },
+
+    selectdia(req, res) {
+
+        const dia = req.params.dia;
+        User.selectdia(dia, (err, data) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Error consultar venta',
+                    error: err
+                });
+            }
+            return res.status(201).json({
+                success: true,
+                message: 'consultas de las ventas del dia',
+                data: data
+
+            });
+        });
+
     }
+
+
 }
 
 

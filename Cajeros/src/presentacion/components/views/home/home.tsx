@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Image, TextInput, ToastAndroid, Touchable, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ToastAndroid, Touchable, TouchableOpacity, ScrollView } from 'react-native';
 import { RoundedButton } from
     '../../../../../src/presentacion/components/RoundedButton';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -50,6 +50,7 @@ export const HomeScreen = () => {
                 <Text style={styles.logoText}></Text>
             </View>
             <View style={styles.form}>
+            <ScrollView>
                 <Text style={styles.formText}>INGRESAR</Text>
                 <CustomTextInput
                     image={require('../../../../../assets/Documento.png')}
@@ -77,8 +78,10 @@ export const HomeScreen = () => {
                         <Text style={styles.formRegisterText}>Regístrate</Text>
                     </TouchableOpacity>
                 </View>
+                </ScrollView>
             </View>
         </View>
+        
     );
 };
 
